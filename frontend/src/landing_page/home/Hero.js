@@ -16,7 +16,7 @@ const Hero = () => {
             more.
           </p>
 
-          <button className="btn   mt-3 px-5 py-2 text-white  fs-7 "style={{background:"#387ED1"}}>
+          <button className="btn  btn-zerodha  mt-3 px-5 py-2 text-white  fs-7 ">
             Sign up for free
           </button>
         </div>
