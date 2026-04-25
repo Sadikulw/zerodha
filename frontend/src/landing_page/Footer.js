@@ -39,6 +39,25 @@ const Footer = () => {
                 <i className="fa-brands fa-telegram fs-5"></i>
               </li>
             </ul>
+            <div className="row text-center justify-content-center mt-4">
+              <div className="col-6">
+                <img
+                  className="img-fluid"
+                  src="/media/image/google-play-badge-light.svg"
+                  alt="Google Play"
+                  style={{ maxWidth: "100px" }}
+                />
+              </div>
+
+              <div className="col-6">
+                <img
+                  className="img-fluid"
+                  src="/media/image/appstore-badge-light.svg"
+                  alt="App Store"
+                  style={{ maxWidth: "94px" }}
+                />
+              </div>
+            </div>
           </div>
           <div className="col">
             <p className="fw-bold">Account</p>

@@ -1,11 +1,43 @@
-import React from 'react'
+import React from "react";
 
 const Hero = () => {
-  return (  
-    <div>
-      <h1>hero</h1>
-    </div>
-  )
-}
+  return (
+    <div className=" container margin">
+      <div className=" text-center mt-5 mb-5">
+        <h3>Charges</h3>
+        <p className="fs-4 pt-3 text-muted">List of all charges and taxes</p>
+      </div>
 
-export default Hero
+      <div className="row text-center">
+        <div className="col-md-4">
+          <img
+            src="/media/image/pricing0.svg"
+            className="img-fluid w-75 mx-auto d-block mb-3"
+          />
+          <h5>Free equity delivery</h5>
+          <p className=" text-muted">All equity delivery investments are absolutely free.</p>
+        </div>
+
+        <div className="col-md-4">
+          <img
+            src="/media/image/intradayTrades.svg"
+            className="img-fluid w-75 mx-auto d-block mb-3"
+          />
+          <h5>Intraday and F&O trades</h5>
+          <p className=" text-muted">Flat ₹ 20 or 0.03% (whichever is lower) per executed order on intraday trades across equity, currency, and commodity trades. Flat ₹20 on all option trades</p>
+        </div>
+
+        <div className="col-md-4">
+          <img
+            src="/media/image/pricing0.svg"
+            className="img-fluid w-75 mx-auto d-block mb-3"
+          />
+          <h5>Free direct MF</h5>
+          <p className=" text-muted">All direct mutual fund investments are free.</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Hero;
