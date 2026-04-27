@@ -674,8 +674,8 @@ hr {
 
 .list li {
   border-bottom: 0.8px solid rgb(235, 234, 234);
-  padding: 12px 10px 12px 14px;
   position: relative;
+ 
 }
 
 .item {
@@ -683,7 +683,7 @@ hr {
   align-items: center;
   justify-content: space-between;
   font-weight: 300;
-  font-size: 0.8rem;
+  font-size: 13px;
   position: relative;
 }
 
@@ -691,6 +691,7 @@ hr {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  gap:4px;
 }
 
 .item-info > * {
@@ -750,10 +751,14 @@ hr {
 }
 
 .action {
+  width: 28px;
+  height: 24px;
+  padding: 0;
+  margin: 1px;
+  font-size: 0.7rem;
   background-color: #fff;
   border: 0.7px solid #9b9b9b;
 }
-
 .icon {
   transform: scale(0.7);
   color: rgb(65, 65, 65);
