@@ -831,6 +831,7 @@ hr {
   position: absolute;
   top: 0;
   left: 0;
+  pointer-events: none;
 }
 
 .watchlist-number ul li:hover {
@@ -846,6 +847,5 @@ hr {
 .action:hover {
   background-color: rgb(212, 212, 212);
 }
-
 
 

@@ -9,15 +9,18 @@ import Orders from "./Orders";
 import Positions from "./Positions";
 import Summary from "./Summary";
 import WatchList from "./WatchList";
-
+import { GeneralContextProvider } from "./GeneralContext";
+import { Toaster } from "react-hot-toast";
 const Dashboard = () => {
+  
   return (
     <div className="dashboard-container">
-      {/* <GeneralContextProvider>
-      
-      </GeneralContextProvider> */}
+      <GeneralContextProvider>
         <WatchList />
+      </GeneralContextProvider>
+
       <div className="content">
+          <Toaster position="top-right"  />
         <Routes>
           <Route exact path="/" element={<Summary />} />
           <Route path="/orders" element={<Orders />} />
