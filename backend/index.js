@@ -1,9 +1,16 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 const { Holdings } = require('./model/holdingsModel');
 const { Positions } = require('./model/PositionsModel');
+const { Orders } = require('./model/OrdersModel');
+
 const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+
 const PORT = process.env.PORT || 3002;
 const url = process.env.MONGO_URL;
 
@@ -192,6 +199,49 @@ mongoose
 //   }
 // });
 
+app.get("/allHoldings", async (req, res) => {
+  try {
+    const holdings = await Holdings.find();
+    res.json(holdings);
+  } catch (error) {
+    console.error("Error fetching holdings:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+app.get("/allPositions", async (req, res) => {
+  try {
+    const positions = await Positions.find();
+    res.json(positions);
+  } catch (error) {
+    console.error("Error fetching holdings:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+app.post("/newOrder", async (req, res) => {
+  try {
+    const newOrder=new Orders({
+      name:req.body.name,
+      qty:req.body.qty,
+      price:req.body.price,
+      mode:req.body.mode,
+    })
+    await newOrder.save();
+    res.json({message:"Order Placed Successfully"})
+  } catch (error) {
+    console.error("Error placing order:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+app.get("/allOrders", async (req, res) => {
+  try {
+    const orders = await Orders.find();
+    res.json(orders);
+  } 
+  catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  } 
+});
 app.listen(3002, () => {
   console.log("Server is running on port 3002");
 });
