@@ -6,10 +6,24 @@ const bodyParser = require("body-parser");
 const { Holdings } = require('./model/holdingsModel');
 const { Positions } = require('./model/PositionsModel');
 const { Orders } = require('./model/OrdersModel');
+const  {User} = require('./model/UserModel');
+const { createSecretToken } = require('./util/SecretToken');
+const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser');
+const {userVerification} =require("./Middleware/AuthMiddleware")
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:3003",
+    "http://localhost:3004"
+  ],
+credentials:true}))
+
 app.use(bodyParser.json());
+app.use(cookieParser());
+
 
 const PORT = process.env.PORT || 3002;
 const url = process.env.MONGO_URL;
@@ -242,6 +256,71 @@ app.get("/allOrders", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   } 
 });
-app.listen(3002, () => {
-  console.log("Server is running on port 3002");
+const cookieOptions = {
+  httpOnly: true,
+  sameSite: "lax",
+  secure: process.env.NODE_ENV === "production",
+  maxAge: 3 * 24 * 60 * 60 * 1000,
+};
+
+app.post("/signup",async(req,res)=>{
+  try {
+    const {name,email,password} = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Name, email, and password are required",
+      });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters",
+      });
+    }
+    const existingUser = await User.findOne({email});
+    if(existingUser){
+      return res.status(400).json({success:false,message:"User already exists"});
+    }
+    const user = await User.create({name,email,password});
+    const token = createSecretToken(user._id);
+    res.cookie("token", token, cookieOptions);
+    res.status(201).json({success:true,message:"User created successfully",token});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({success:false,message:"Internal server error"});
+  }
+})
+app.post("/login",async(req,res)=>{
+  try {
+    const {email,password} = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required",
+      });
+    }
+    const user = await User.findOne({email});
+    if(!user){
+      return res.status(400).json({success:false,message:"Invalid email or password"});
+    }
+    const isMatch = await bcrypt.compare(password,user.password);
+    if(!isMatch){
+      return res.status(400).json({success:false,message:"Invalid email or password"});
+    }
+    const token = createSecretToken(user._id);
+    res.cookie("token", token, cookieOptions);
+    res.status(200).json({success:true,message:"Login successful",token});
+  }
+    catch (error) {
+      console.error(error);
+      res.status(500).json({success:false,message:"Internal server error"});
+    }
+})
+app.get("/profile",userVerification,(req,res)=>{
+  res.json(req.user);
+})
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
