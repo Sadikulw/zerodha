@@ -6,11 +6,11 @@ function Navbar() {
       className=" navbar navbar-expand-lg border-bottom "
       style={{ backgroundColor: "#FFF" }}
     >
-      <div className="  container p-2  " style={{marginLeft:"160px"}}>
-        <Link className="navbar-brand" to ="/">
+      <div className="container p-2">
+        <Link className="navbar-brand" to="/">
           <img
             src="/media/image/logo.svg"
-            style={{ width: "25%" }}
+            style={{ width: "145px" }}
             alt="Logo"
           />
         </Link>
@@ -34,6 +34,11 @@ function Navbar() {
                 </Link>
               </li>
               <li className="nav-item">
+                <Link className="nav-link " to="/login">
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link " to="/about">
                   About
                 </Link>
@@ -54,10 +59,9 @@ function Navbar() {
                 </Link>
               </li>
               <li>
-              <i className="fa-solid fa-bars m-auto mt-2 fs-4" ></i>
+                <i className="fa-solid fa-bars m-auto mt-2 fs-4"></i>
               </li>
             </ul>
-            
           </form>
         </div>
       </div>

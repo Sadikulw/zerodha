@@ -7,14 +7,13 @@ const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3002";
 const DASHBOARD_URL =
   process.env.REACT_APP_DASHBOARD_URL || "http://localhost:3004";
 
-const Signup = () => {
+const Login = () => {
   const [inputValue, setInputValue] = useState({
-    name: "",
     email: "",
     password: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { name, email, password } = inputValue;
+  const { email, password } = inputValue;
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -24,43 +23,31 @@ const Signup = () => {
     });
   };
 
-  const handleError = (err) =>
-    toast.error(err, {
-      position: "bottom-left",
-    });
-  const handleSuccess = (msg) =>
-    toast.success(msg, {
-      position: "bottom-right",
-    });
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      const { data } = await axios.post(
-        `${API_URL}/signup`,
-        {
-          ...inputValue,
-        },
-        { withCredentials: true }
-      );
-      const { success, message } = data;
-      if (success) {
-        handleSuccess(message);
-        setInputValue({
-          name: "",
-          email: "",
-          password: "",
+      const { data } = await axios.post(`${API_URL}/login`, inputValue, {
+        withCredentials: true,
+      });
+
+      if (data.success) {
+        toast.success(data.message || "Login successful", {
+          position: "bottom-right",
         });
         setTimeout(() => {
           window.location.href = DASHBOARD_URL;
         }, 1000);
       } else {
-        handleError(message);
+        toast.error(data.message || "Login failed", {
+          position: "bottom-left",
+        });
       }
     } catch (error) {
-      handleError(error.response?.data?.message || "Signup failed");
+      toast.error(error.response?.data?.message || "Login failed", {
+        position: "bottom-left",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -70,30 +57,19 @@ const Signup = () => {
     <div className="auth-page">
       <section className="auth-panel">
         <div className="auth-copy">
-          <p className="auth-eyebrow">Start trading</p>
-          <h1>Open your Zerodha account</h1>
+          <p className="auth-eyebrow">Welcome back</p>
+          <h1>Login to Kite</h1>
           <p>
-            Create your account and continue to the dashboard to manage your
-            orders, holdings, and positions.
+            Access your dashboard to review holdings, positions, and recent
+            orders.
           </p>
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
-          <h2>Signup</h2>
-          <label htmlFor="name">Name</label>
+          <h2>Login</h2>
+          <label htmlFor="login-email">Email</label>
           <input
-            id="name"
-            type="text"
-            name="name"
-            value={name}
-            placeholder="Enter your name"
-            onChange={handleOnChange}
-            required
-          />
-
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
+            id="login-email"
             type="email"
             name="email"
             value={email}
@@ -102,23 +78,22 @@ const Signup = () => {
             required
           />
 
-          <label htmlFor="password">Password</label>
+          <label htmlFor="login-password">Password</label>
           <input
-            id="password"
+            id="login-password"
             type="password"
             name="password"
             value={password}
-            placeholder="Minimum 6 characters"
-            minLength="6"
+            placeholder="Enter your password"
             onChange={handleOnChange}
             required
           />
 
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Creating account..." : "Create account"}
+            {isSubmitting ? "Logging in..." : "Login"}
           </button>
           <span>
-            Already have an account? <Link to="/login">Login</Link>
+            New to Zerodha? <Link to="/signup">Create account</Link>
           </span>
         </form>
       </section>
@@ -127,4 +102,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
