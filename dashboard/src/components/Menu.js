@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import { People } from "@mui/icons-material";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios'
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isprofileOpen, setIsProfileOpen] = useState(false);
+  const [profile,setProfile]=useState({email:"abc",name:"abc"})
   const handleMenuClick = (index) => {
     setSelectedMenu(index);
   };
   const handleProfileClick = () => {
     setIsProfileOpen(!isprofileOpen);
   };
+
+   useEffect(()=>{
+    axios.get("http://localhost:3002/profile").then((res)=>{
+      profile(res.data);
+    }).catch((err)=>{
+      console.log(err);
+    });
+  },[]);
 
   const menuClass = "menu";
   const activeMenuClass = "menu selected";
@@ -51,8 +62,8 @@ const Menu = () => {
         <hr />
         {/* onClick={handleProfileClick} */}
         <div className="profile" onClick={handleProfileClick}>
-          <div className="avatar">ZU</div>
-          <p className="username">USERID</p>
+          <div className="avatar">{profile.name.slice(0,2).toUpperCase()}</div>
+          <p className="username">{profile.name}</p>
         </div>
         {isprofileOpen}
       </div>
